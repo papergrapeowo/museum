@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { ArrowLeft, Trophy, X, Check } from "lucide-react";
 import { artifacts } from "../data/artifacts";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useLanguage } from "../contexts/LanguageContext";
 
 interface Question {
   artifact: typeof artifacts[0];
@@ -12,6 +13,7 @@ interface Question {
 
 export function GuessGame() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [score, setScore] = useState(0);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
@@ -83,7 +85,7 @@ export function GuessGame() {
   };
 
   if (!currentQuestion) {
-    return <div className="flex items-center justify-center h-full">加载中...</div>;
+    return <div className="flex items-center justify-center h-full">{t('加载中...')}</div>;
   }
 
   const isGameOver = questionsAnswered >= totalQuestions && showResult;
@@ -98,12 +100,12 @@ export function GuessGame() {
             className="flex items-center gap-2 text-gray-700"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>返回</span>
+            <span>{t('返回')}</span>
           </button>
           <div className="text-sm">
-            <span className="text-gray-600">得分: </span>
+            <span className="text-gray-600">{t('得分: ')}</span>
             <span className="text-lg text-green-600">{score}</span>
-            <span className="text-gray-600"> / {questionsAnswered}</span>
+            <span className="text-gray-600">{t(' / ')} {questionsAnswered}</span>
           </div>
         </div>
         <div className="flex gap-1">
@@ -124,7 +126,7 @@ export function GuessGame() {
 
       {/* 游戏区域 */}
       <div className="p-6">
-        <h2 className="text-xl mb-6 text-center">这是什么文物？</h2>
+        <h2 className="text-xl mb-6 text-center">{t('这是什么文物？')}</h2>
 
         {/* 图片展示区 */}
         <div className="max-w-sm mx-auto mb-6">
@@ -144,12 +146,12 @@ export function GuessGame() {
             className="w-full mt-3 py-2 bg-blue-100 text-blue-600 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {revealLevel === 0
-              ? "🔍 显示线索 (3次)"
+              ? t('🔍 显示线索 (3次)')
               : revealLevel === 1
-              ? "🔍 再清晰一点 (2次)"
+              ? t('🔍 再清晰一点 (2次)')
               : revealLevel === 2
-              ? "🔍 最后一次提示 (1次)"
-              : "✓ 已显示完整图片"}
+              ? t('🔍 最后一次提示 (1次)')
+              : t('✓ 已显示完整图片')}
           </button>
         </div>
 
@@ -159,21 +161,21 @@ export function GuessGame() {
             {revealLevel >= 1 && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <p className="text-sm text-blue-800">
-                  💡 朝代：{currentQuestion.artifact.dynasty}
+                  {t('💡 朝代：')}{currentQuestion.artifact.dynasty}
                 </p>
               </div>
             )}
             {revealLevel >= 2 && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <p className="text-sm text-blue-800">
-                  💡 年代：{currentQuestion.artifact.year}
+                  {t('💡 年代：')}{currentQuestion.artifact.year}
                 </p>
               </div>
             )}
             {revealLevel >= 3 && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <p className="text-sm text-blue-800">
-                  💡 提示：{currentQuestion.artifact.description.slice(0, 30)}...
+                  {t('💡 提示：')}{currentQuestion.artifact.description.slice(0, 30)}...
                 </p>
               </div>
             )}
@@ -231,8 +233,8 @@ export function GuessGame() {
                 }`}
               >
                 {selectedAnswer === currentQuestion.correctAnswer
-                  ? "🎉 回答正确！"
-                  : `❌ 正确答案是：${currentQuestion.correctAnswer}`}
+                  ? t('🎉 回答正确！')
+                  : `${t('❌ 正确答案是：')}${currentQuestion.correctAnswer}`}
               </p>
             </div>
           </div>
@@ -246,29 +248,29 @@ export function GuessGame() {
             <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Trophy className="w-8 h-8 text-yellow-600" />
             </div>
-            <h3 className="text-2xl mb-2">游戏结束！</h3>
+            <h3 className="text-2xl mb-2">{t('游戏结束！')}</h3>
             <p className="text-3xl text-green-600 mb-2">
               {score} / {totalQuestions}
             </p>
             <p className="text-gray-600 mb-6">
               {score === totalQuestions
-                ? "完美！你是文物专家！"
+                ? t('完美！你是文物专家！')
                 : score >= totalQuestions * 0.6
-                ? "不错！继续加油！"
-                : "多看看文物介绍吧~"}
+                ? t('不错！继续加油！')
+                : t('多看看文物介绍吧~')}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={resetGame}
                 className="flex-1 bg-green-600 text-white py-3 rounded-lg"
               >
-                再玩一次
+                {t('再玩一次')}
               </button>
               <button
                 onClick={() => navigate("/games")}
                 className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-lg"
               >
-                返回
+                {t('返回')}
               </button>
             </div>
           </div>
