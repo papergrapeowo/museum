@@ -4,22 +4,24 @@ import { artifacts } from "../data/artifacts";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ArtifactModel3D } from "./ArtifactModel3D";
 import { useState } from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function ArtifactDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const artifact = artifacts.find((a) => a.id === Number(id));
   const [viewMode, setViewMode] = useState<"image" | "3d">("image");
 
   if (!artifact) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
-        <p className="text-gray-600 mb-4">文物不存在</p>
+        <p className="text-gray-600 mb-4">{t('文物不存在')}</p>
         <button
           onClick={() => navigate("/artifacts")}
           className="text-blue-600"
         >
-          返回文物列表
+          {t('返回文物列表')}
         </button>
       </div>
     );
@@ -35,7 +37,7 @@ export function ArtifactDetail() {
             className="flex items-center gap-2 text-gray-700"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>返回</span>
+            <span>{t('返回')}</span>
           </button>
           <Link
             to="/chat"
@@ -43,7 +45,7 @@ export function ArtifactDetail() {
             className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>与TA对话</span>
+            <span>{t('与TA对话')}</span>
           </Link>
         </div>
       </div>
@@ -57,7 +59,7 @@ export function ArtifactDetail() {
             className="w-full h-full object-contain"
           />
         ) : (
-          <ArtifactModel3D modelType={artifact.modelType} imageSrc={artifact.image} />
+          <ArtifactModel3D modelType={artifact.modelType} imageSrc={artifact.image} modelPath={artifact.modelPath} />
         )}
         
         {/* 视图切换按钮 */}
@@ -70,7 +72,7 @@ export function ArtifactDetail() {
                 : "bg-white/90 text-gray-700 hover:bg-white"
             }`}
           >
-            📷 图片
+            {t('📷 图片')}
           </button>
           <button
             onClick={() => setViewMode("3d")}
@@ -81,38 +83,38 @@ export function ArtifactDetail() {
             }`}
           >
             <Box className="w-4 h-4" />
-            3D
+            {t('3D')}
           </button>
         </div>
       </div>
 
       {/* 文物信息 */}
       <div className="p-6">
-        <h1 className="text-2xl mb-4">{artifact.name}</h1>
+        <h1 className="text-2xl mb-4">{t(artifact.name)}</h1>
         
         <div className="bg-gray-50 rounded-lg p-4 mb-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-600 mb-1">朝代</p>
-              <p>{artifact.dynasty}</p>
+              <p className="text-sm text-gray-600 mb-1">{t('朝代')}</p>
+              <p>{t(artifact.dynasty)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">年代</p>
-              <p className="text-sm">{artifact.year}</p>
+              <p className="text-sm text-gray-600 mb-1">{t('年代')}</p>
+              <p className="text-sm">{t(artifact.year)}</p>
             </div>
           </div>
         </div>
 
         <section className="mb-6">
-          <h2 className="text-lg mb-3">文物介绍</h2>
-          <p className="text-gray-700 leading-relaxed">{artifact.description}</p>
+          <h2 className="text-lg mb-3">{t('文物介绍')}</h2>
+          <p className="text-gray-700 leading-relaxed">{t(artifact.description)}</p>
         </section>
 
         <section>
-          <h2 className="text-lg mb-3">文物自述</h2>
+          <h2 className="text-lg mb-3">{t('文物自述')}</h2>
           <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
             <p className="text-gray-700 leading-relaxed italic">
-              "{artifact.story}"
+              "{t(artifact.story)}"
             </p>
           </div>
         </section>

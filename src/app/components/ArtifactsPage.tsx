@@ -1,14 +1,16 @@
 import { Link } from "react-router";
 import { artifacts } from "../data/artifacts";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function ArtifactsPage() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-full bg-gray-50">
       {/* 页面标题 */}
       <div className="bg-white border-b border-gray-200 p-6">
-        <h1 className="text-2xl">精品文物</h1>
-        <p className="text-sm text-gray-600 mt-1">共收录 {artifacts.length} 件珍贵文物</p>
+        <h1 className="text-2xl">{t('精品文物')}</h1>
+        <p className="text-sm text-gray-600 mt-1">{t('共收录 {count} 件珍贵文物', { count: artifacts.length })}</p>
       </div>
 
       {/* 文物列表 */}
@@ -28,12 +30,12 @@ export function ArtifactsPage() {
                 />
               </div>
               <div className="flex-1 py-3 pr-4">
-                <h3 className="text-lg mb-1">{artifact.name}</h3>
+                <h3 className="text-lg mb-1">{t(artifact.name)}</h3>
                 <p className="text-sm text-gray-600 mb-2">
-                  {artifact.dynasty} · {artifact.year}
+                  {t(artifact.dynasty)} · {t(artifact.year)}
                 </p>
                 <p className="text-sm text-gray-700 line-clamp-2">
-                  {artifact.description}
+                  {t(artifact.description)}
                 </p>
               </div>
             </div>

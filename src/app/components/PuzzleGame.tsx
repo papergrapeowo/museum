@@ -2,9 +2,11 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { ArrowLeft, RotateCcw, Trophy, Lightbulb } from "lucide-react";
 import { artifacts } from "../data/artifacts";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function PuzzleGame() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   // 选取第一个文物作为当前关卡，你也可以根据路由传参选择
   const [currentArtifact] = useState(artifacts[0]);
   const [pieces, setPieces] = useState<number[]>([]); // 存储每个格子的内容索引
@@ -79,8 +81,8 @@ export function PuzzleGame() {
           <ArrowLeft size={20} />
         </button>
         <div className="text-center">
-          <h1 className="font-bold text-gray-800">文物修复计划</h1>
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest">Puzzle Challenge</p>
+          <h1 className="font-bold text-gray-800">{t('文物修复计划')}</h1>
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest">{t('Puzzle Challenge')}</p>
         </div>
         <button onClick={initializePuzzle} className="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
           <RotateCcw size={20} />
@@ -91,11 +93,11 @@ export function PuzzleGame() {
         {/* 游戏进度信息 */}
         <div className="w-full flex justify-between items-end mb-6">
           <div>
-            <span className="text-xs text-gray-400 block mb-1">正在修复</span>
+            <span className="text-xs text-gray-400 block mb-1">{t('正在修复')}</span>
             <h2 className="text-lg font-bold text-[#2F3E46]">{currentArtifact.name}</h2>
           </div>
           <div className="text-right">
-            <span className="text-xs text-gray-400 block mb-1">移动步数</span>
+            <span className="text-xs text-gray-400 block mb-1">{t('移动步数')}</span>
             <span className="text-xl font-mono font-bold text-blue-600">{moves}</span>
           </div>
         </div>
@@ -140,7 +142,7 @@ export function PuzzleGame() {
             className="flex-1 flex items-center justify-center gap-2 py-3 bg-white rounded-xl text-sm font-medium border border-gray-100 shadow-sm"
           >
             <Lightbulb size={16} className={showHint ? "text-yellow-500" : "text-gray-400"} />
-            {showHint ? "隐藏原图" : "查看原图"}
+            {showHint ? t('隐藏原图') : t('查看原图')}
           </button>
         </div>
 
@@ -158,22 +160,22 @@ export function PuzzleGame() {
             <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Trophy className="w-10 h-10 text-yellow-600 animate-bounce" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">修复成功！</h3>
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">{t('修复成功！')}</h3>
             <p className="text-gray-500 text-sm mb-6 leading-relaxed">
-              你只用了 <span className="font-bold text-blue-600">{moves}</span> 步就让 {currentArtifact.name} 焕发新生。
+              {t('你只用了 {moves} 步就让 {artifactName} 焕发新生。', { moves, artifactName: currentArtifact.name })}
             </p>
             <div className="space-y-3">
               <button
                 onClick={initializePuzzle}
                 className="w-full bg-[#2F3E46] text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-transform"
               >
-                挑战下一关
+                {t('挑战下一关')}
               </button>
               <button
                 onClick={() => navigate("/games")}
                 className="w-full bg-gray-50 text-gray-500 py-3 rounded-xl text-sm"
               >
-                回到大厅
+                {t('回到大厅')}
               </button>
             </div>
           </div>
